@@ -5,7 +5,7 @@ from tkinter import messagebox
 import customtkinter
 from PIL import Image
 
-logo = customtkinter.CTkImage(dark_image=Image.open('C:\\Users\\jguadamuz\\Videos\\UNITOVA - TUTORIALES\\BLUEYONDER.PNG'), size =(280, 100)) 
+logo = customtkinter.CTkImage(dark_image=Image.open('C:Direccion de imagen\PLAYERFLIX.PNG'), size =(280, 100)) 
  
 ventana_login=customtkinter.CTk()        
 ventana_login.title('My App')
@@ -67,7 +67,7 @@ frame1= customtkinter.CTkFrame(ventana_principal,
                                fg_color='white')
 frame1.grid(row=0, column=0, padx=20, pady=(0,20), sticky='nsew')
 frame1.grid_columnconfigure((0, 1, 2, 3, 5, 6, 7, 8, 9, 10), weight=1)
-logo_Principal = customtkinter.CTkImage(light_image=Image.open('C:\\Users\\jguadamuz\\Videos\\UNITOVA - TUTORIALES\\BLUEYONDER.PNG'), size =(280, 100)) 
+logo_Principal = customtkinter.CTkImage(light_image=Image.open('C:\\Direccón de imagen\\PLAYERFLIX.PNG'), size =(280, 100)) 
 label_logo = customtkinter.CTkLabel(frame1,
                                   image=logo_Principal, 
                                   text='',
