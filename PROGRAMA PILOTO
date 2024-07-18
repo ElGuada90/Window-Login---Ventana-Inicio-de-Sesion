@@ -1,0 +1,162 @@
+################# PROGRAMA DE PRUEBA PILOTO ###############
+
+# importamos la librearia de customtkinter.
+import customtkinter 
+from tkinter import messagebox
+from PIL import Image
+from PIL import ImageTk
+
+# Configuracion de tema y aparencia.
+customtkinter.set_default_color_theme("green")  # Themes: "blue" (standard), "green", "dark-blue"
+customtkinter.set_appearance_mode("light") # mode light or dark
+
+##################### FRONTEND LOGIN ####################
+
+# Creamos una ventana de clase tipo login.
+class login(customtkinter.CTk):
+    def __init__(self):
+        super().__init__()
+        self.title("Login")
+        self.geometry("375x365+700+175")
+        self.grid_columnconfigure((0), weight=1)
+        self.grid_rowconfigure((0), weight=1)
+        logo = customtkinter.CTkImage(dark_image=Image.open('C:\\Users\\jguadamuz\\Documents\\python\\image\\icono-05.PNG'), size =(50, 50))
+
+        self.frame_back = customtkinter.CTkFrame(self)
+        self.frame_back.grid(row=0, column= 0, padx=10, pady=10, sticky="" )
+        self.frame_back.grid_columnconfigure((0), weight=1)
+        self.frame_back.grid_rowconfigure((0), weight=1)
+        
+        self.frame = customtkinter.CTkFrame(self.frame_back, fg_color=("gray60") )
+        self.frame.grid(row=0, column= 0, padx=10, pady=10, sticky="" )
+        self.frame.grid_columnconfigure((0), weight=1)
+        self.frame.grid_rowconfigure((0), weight=1)
+        
+        self.label_logo = customtkinter.CTkLabel(self.frame, 
+                                            font=customtkinter.CTkFont(size=18, weight="bold"),
+                                            image=logo,
+                                            fg_color="transparent",
+                                            text="",
+                                            corner_radius=5,
+                                            width=250,
+                                            height=40)
+        self.label_logo.grid(row=0, column= 0, padx=5, pady=(5,5), sticky="" )
+        
+        self.label = customtkinter.CTkLabel(self.frame, 
+                                            font=customtkinter.CTkFont(size=18, weight="bold"),
+                                            fg_color="transparent",
+                                            text="LOGIN",
+                                            text_color=('white'),
+                                            corner_radius=5,
+                                            height=40)
+        self.label.grid(row=1, column= 0, padx=5, pady=1, sticky="" )
+        
+        self.entry_user = customtkinter.CTkEntry(self.frame, 
+                                            fg_color=("light green", "gray10"),
+                                            corner_radius=5,
+                                            width=200,
+                                            height=40, 
+                                            placeholder_text="Ingrese Usuario")
+        self.entry_user.grid(row=2, column= 0, padx=5, pady=5, sticky="" )
+        
+        self.entry_password = customtkinter.CTkEntry(self.frame, 
+                                            fg_color="light green",
+                                            corner_radius=5,
+                                            width=200,
+                                            height=40,
+                                            placeholder_text="Ingrese Password",
+                                            show="*")
+        self.entry_password.grid(row=3, column= 0, padx=5, pady=5, sticky="" )
+        
+        self.checkbox_var = customtkinter.StringVar(value="off")
+        self.checkbox = customtkinter.CTkCheckBox(self.frame, 
+                                            fg_color="light green",
+                                            text="Mostrar Password",
+                                            corner_radius=5,
+                                            width=40,
+                                            height=40,
+                                            command=self.mostrar_password,
+                                            variable=self.checkbox_var, 
+                                            onvalue="on", 
+                                            offvalue="off")
+        self.checkbox.grid(row=4, column= 0, padx=5, pady=(2,2) )
+        
+        self.button = customtkinter.CTkButton(self.frame, text="Ingresar", command=self.validacion)
+        self.button.grid(row=5, column=0, padx=5, pady=5 )
+        
+        self.footer_label = customtkinter.CTkLabel(self, 
+                                            font=customtkinter.CTkFont(size=10, weight="bold"),
+                                            fg_color="transparent",
+                                            text="Copyright ElGuada 2024",
+                                            corner_radius=5,
+                                            height=40)
+        self.footer_label.grid(row=1, column= 0, padx=5, pady=5, sticky="" )
+
+
+#################### BACKEND LOGIN ####################
+    
+
+    # Funcion para activar el checkbox    
+    def mostrar_password(self):
+        if self.checkbox_var.get() == "on":
+            self.entry_password.configure(show="")
+        else:
+            self.entry_password.configure(show="*")
+                
+            
+    # Funcion para definir las listas de usuarios, contraseñas y roles
+    def bd_container(self):
+        users = ["jguadamuz", "rruiz", "yperalta", "ncarrillo", "mbencomo"]
+        passwords = ["037679", "a12345_", "a4321_", "a54321_", "51234_"] 
+        roles = ["administrador", "user", "user", "user", "user"]
+        return users, passwords, roles
+
+    ##### Función validar credenciales para inicio de sesión #####
+    def validacion(self):
+        users, passwords, roles = self.bd_container()
+
+        username = self.entry_user.get()
+        password = self.entry_password.get()
+        
+        # Verificar si el usuario existe en la lista de usuarios
+        if username in users:
+            # Obtener el índice del usuario
+            index = users.index(username)
+            
+            # Verificar si la contraseña coincide
+            if passwords[index] == password:
+                print(f'Welcome {username}, Rol: {roles[index]}')
+                messagebox.showinfo("Inicio de sesión", "Inicio de sesión exitoso")
+                self.destroy()  # Cerrar la ventana de login
+                Home(username, roles[index])  # Abrir la nueva ventana
+            else:
+                print('Incorrect password. Please try again.')
+                messagebox.showerror("Inicio de sesión", "Password incorrecto")
+                
+        else:
+            print('Username not found. Please try again.')
+            messagebox.showerror("Inicio de sesión", "Nombre de usuario incorrecto")
+
+#################### FRONTEND HOME #################### 
+    
+# Clase para la nueva ventana Home
+class Home(customtkinter.CTk):
+    def __init__(self, username, role):
+        super().__init__()
+        self.title(f'Home - {username}')
+        self.geometry('520x500+525+100')
+        self.grid_columnconfigure((0, 1), weight=1)
+        
+        self.label = customtkinter.CTkLabel(self, 
+                                            font=customtkinter.CTkFont(size=18, weight="bold"),
+                                            fg_color="transparent",
+                                            text=f'Bienvenido {username}, Rol: {role}',
+                                            corner_radius=5,
+                                            height=40)
+        self.label.grid(row=0, column=0, padx=5, pady=5, sticky="w")
+        
+        self.mainloop()
+
+        
+window_login = login() # almacenamos la clase login en la variable window_login
+window_login.mainloop()
